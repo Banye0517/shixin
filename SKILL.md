@@ -1,59 +1,66 @@
 ---
 name: shixin
-description: 将设计参考、录屏或产品想法收敛为可运行、可验证、可发布的网页或 macOS 桌面原型；适用于需要真实交互、业务计算、视觉还原和交付证据的个人产品。
+description: 当用户要构建类似 PayDance 的实时工资或收入追踪器时使用：实现月薪/日薪/时薪换算、工作日、午休、通勤、实时入账、进度和预计收入，并采用科技风界面、macOS 菜单栏金额入口与 iOS 状态栏或 Live Activity 设计。
 metadata:
-  short-description: 从设计参考到可验证产品原型
+  short-description: 科技风实时工资追踪器产品 Skill
 ---
 
-# Shixin
+# Shixin · 实时工资追踪器
 
-把设计师的视觉目标和实际使用场景，转成一个能运行、能检查、能交付的本地产品原型。适合 React/Vite 网页原型和 macOS/Tauri 菜单栏应用；不把一张漂亮截图当成完成证明。
+`shixin` 是一个产品型 Skill，不是通用的前端开发教程。它指导实现一个功能接近 [PayDance](https://github.com/MrBaoboer/PayDance) 的本地优先实时工资追踪器：用户配置薪资和工作安排后，应用持续计算当前已经赚到的钱，并在桌面与移动端提供一眼可读的入口。
 
-## 先固定边界
+## 产品目标
 
-- 先区分事实、推测和待确认项：参考图只证明视觉方向，录屏只证明可见行为，不能臆测未展示的产品规则。
-- 先写清完成标准、平台、主要数据状态和验证方式；如果缺少关键上下文，采用最小安全假设并记录。
-- 保留用户已确认的范围。个人本地工具默认不添加账号、云同步、遥测、自动启动、通知或公发布能力。
-- 视觉来源只有一份：选定的参考图、录屏或设计稿作为布局、密度、层级、色彩和文案的事实来源。
+让用户随时知道：今天已经赚了多少、当前工作进度、距离下班多久、今天预计收入是多少。计算结果必须由一套 canonical salary schedule 驱动，主看板、macOS 菜单栏和 iOS 快捷视图不能各算一遍。
 
-## 工作路由
+## 先读取对应规范
 
-根据当前请求只加载相关参考文档，不要默认读取全部内容：
+- 需要实现或修改功能：读取 [references/product-spec.md](references/product-spec.md)。
+- 需要设计科技风界面：读取 [references/visual-system.md](references/visual-system.md)。
+- 需要 macOS 菜单栏或 iOS 状态栏/Live Activity：读取 [references/platform-surfaces.md](references/platform-surfaces.md)。
+- 需要测试、打包或发布：读取 [references/qa-release.md](references/qa-release.md)。
 
-1. 需求和业务规则：读取 [references/product-flow.md](references/product-flow.md)。
-2. 从截图、录屏或生成图实现 UI：读取 [references/visual-implementation.md](references/visual-implementation.md)。
-3. 需要 macOS 菜单栏、Tauri 或原生窗口：读取 [references/macos-tauri.md](references/macos-tauri.md)。
-4. 需要测试、浏览器验收、打包或 GitHub 交付：读取 [references/qa-release.md](references/qa-release.md)。
+## 不可偏离的产品边界
 
-## 必须保持的工作节奏
+- 这是实时工资产品，不要把结果改写成泛化的 KPI dashboard、待办工具或抽象设计案例。
+- 功能参考 PayDance 的公开产品说明，但独立实现品牌、文案、视觉和代码，不复制源码、商标或页面结构。[PayDance](https://github.com/MrBaoboer/PayDance)
+- 默认本地优先：不添加账号、云同步、遥测或后端，除非用户另行要求。
+- 当前桌面范围是 macOS：顶部菜单栏只显示金额，点击后打开或聚焦完整看板；不使用大悬浮窗，不显示蓝色 `¥` 图标。
+- iOS 设计优先做状态栏、安全区、Widget/Live Activity 的产品界面；不要声称普通 App 可以随意替换系统状态栏。
 
-1. 先做轻量需求拆解和风险判断，再写等价的 PRD、Tech Spec 或项目说明；复杂改动未定义验收标准前不动代码。
-2. 先用固定数据完成静态视觉保真，再接入实时数据、持久化和原生桥接。
-3. 业务计算放在纯函数或单一状态模型里；UI、浏览器模式和原生壳都消费同一份派生结果。
-4. 修复录屏或测试暴露的问题时，先复现并定位根因，再做最小修改；不把“构建成功”当作交互或视觉验收。
-5. 交付时分开报告：代码通过的证据、浏览器看到的证据、原生系统看到的证据，以及仍然受环境限制的部分。
+## 核心功能
 
-## 可复用 Skill 的协作
+实现时至少覆盖：
 
-在目标环境可用时按需调用，不复制它们的通用内容：
+1. 月薪、日薪、时薪模式及清晰的换算规则。
+2. 周一到周日工作日选择、上下班时间和跨零点夜班。
+3. 可选午休，并从有效计薪时长中扣除。
+4. 可选通勤，分别填写上班前和下班后的分钟数，并计入有效工作时长。
+5. 实时今日入账，至少显示到小数点后两位。
+6. 工作进度、已工作时长、距离下班、时薪和今日预计收入。
+7. 未选工作日显示休息状态，不产生当日收入。
+8. 设置校验、保存、恢复默认值和本地持久化。
 
-- `brainstorming`：需求不清或需要做创意方向选择时。
-- `writing-plans`：多文件、架构、数据模型或发布任务开始前。
-- `product-design`：需要从参考图推导页面结构、状态和交互时。
-- `design-taste-frontend` 或 `frontend-design`：需要高质量、非模板化前端视觉时。
-- `教程美化方案`：产出 VitePress/教程型交互说明时。
-- `artifact-template-nova-fit-blue-energy`：用户明确选用 NOVA Fit Blue Energy 视觉模板时。
-- `test-driven-development`：新增计算逻辑或修复可复现缺陷时。
-- `systematic-debugging`：遇到构建失败、交互异常或运行时错误时。
-- `browser` / `ego-browser`：需要真实浏览器交互和页面证据时。
-- `github`：用户明确授权提交、推送或创建 GitHub 仓库时。
+## 实现规则
 
-如果某个 Skill 不可用，保留同样的边界和验收要求，使用当前环境的等价能力；不要假装调用成功。
+- 先用固定数据做静态界面，再接入实时计时和持久化。
+- 所有金额、进度、有效起止时间和倒计时都从同一份 salary schedule 派生。
+- 表单先编辑 draft，通过校验后再替换 committed settings；非法输入不能污染已保存配置。
+- 浏览器预览和原生壳共享核心计算逻辑；原生 command 在浏览器模式中安全 no-op。
+- 先复现真实问题再修根因；构建成功不等于视觉、点击或系统 UI 验收成功。
 
-## 交付底线
+## 视觉方向
 
-- 本地应用必须有可重复的启动、测试和构建命令。
-- 视觉任务必须检查文字截断、遮挡、响应式布局、主要点击区域和关键状态。
-- 原生 macOS 行为必须单独验证；浏览器中的模拟托盘不能替代系统菜单栏验收。
-- 任何无法验证的结论都明确标注为“未验证”或“受环境限制”，不把推测写成事实。
-- 发布前只提交确认过的 Skill 文件，不携带用户项目源码、录屏、截图、环境变量、Token、登录态或个人路径。
+使用科技风蓝色毛玻璃：深海军蓝背景、蓝色能量光、半透明面板、细边框、冷白数字、高亮进度环和清晰的数字层级。视觉服务于“实时收入可读”，不要用过度发光、装饰性粒子或复杂图表遮住金额和状态。
+
+## 交付标准
+
+- 核心计算有单元测试，至少覆盖工作日、午休、通勤、跨零点、休息日和边界时间。
+- 浏览器中真实检查设置保存、金额变化、窄窗口、文字截断、主要点击区域和控制台错误。
+- macOS 单独检查菜单栏金额、点击聚焦和退出行为；没有系统 UI 证据时明确标记未验证。
+- iOS 设计区分安全区顶部栏、Widget 和 Live Activity；如果要真正实现 Live Activity，使用 ActivityKit + WidgetKit/SwiftUI，而不是模拟一条系统状态栏。
+- 最终报告区分“功能已实现”“视觉已验证”“原生系统已验证”和“仍受环境限制”。
+
+## 可协作的已有 Skill
+
+按需使用 `brainstorming`、`product-design`、`design-taste-frontend`、`frontend-design`、`test-driven-development`、`systematic-debugging`、浏览器控制和 `github`。它们负责方法或工具，`shixin` 负责本产品的功能边界、数据规则和平台表面；不要用通用 Skill 覆盖本文件的产品约束。

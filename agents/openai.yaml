@@ -1,8 +1,8 @@
 interface:
-  display_name: "Shixin 产品原型工作流"
-  short_description: "把视觉参考收敛为可验证的桌面与网页产品原型"
+  display_name: "Shixin 实时工资追踪器"
+  short_description: "科技风实时工资追踪器产品 Skill"
   brand_color: "#2F7BFF"
-  default_prompt: "使用 $shixin 把这个参考图或产品想法收敛成可运行、可验证、可发布的原型。"
+  default_prompt: "使用 $shixin 构建一个类似 PayDance、但采用科技风界面并包含 macOS 菜单栏和 iOS 状态栏设计的实时工资追踪器。"
 
 policy:
   allow_implicit_invocation: true

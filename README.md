@@ -1,32 +1,40 @@
 # shixin
 
-一个面向设计师与初级开发者的 Codex Skill：把参考图、录屏或产品想法收敛成可运行、可验证、可发布的网页或 macOS 桌面原型。
+一个用于构建“实时工资追踪器”的 Codex Skill。它参考 [PayDance](https://github.com/MrBaoboer/PayDance) 的产品功能，但使用独立的科技风蓝色毛玻璃界面，并扩展 macOS 菜单栏与 iOS 状态栏/Live Activity 设计。
 
-## 它解决什么
+## 产品能力
 
-`shixin` 把一次真实的 PayDance 产品挑战整理成可复用工作流：
+- 月薪、日薪、时薪换算
+- 工作日选择、上下班时间、跨零点夜班
+- 午休扣除
+- 上下班通勤时间计入工作时长
+- 实时今日入账、工作进度、剩余时间、今日预计收入
+- 本地优先保存，不要求账号或云端服务
+- macOS 菜单栏只显示金额，点击打开完整看板
+- iOS 顶部状态栏、安全区、Widget 和 Live Activity 风格的快捷查看设计
 
-- 先拆解需求、平台和验收标准，再开始实现。
-- 从视觉参考构建静态保真页面，再接入业务逻辑和持久化。
-- 用单一业务模型处理工作日、午休、通勤、实时金额等派生状态。
-- 将 React/Vite 页面与 macOS/Tauri 菜单栏壳分开验证。
-- 用测试、浏览器交互、原生打包和证据化 QA 支撑交付。
+## 与 PayDance 的区别
 
-它整合了 `brainstorming`、`writing-plans`、`product-design`、`design-taste-frontend`、`frontend-design`、`test-driven-development`、`systematic-debugging`、浏览器验收和 `github` 发布能力的协作边界；不复制这些 Skill 的通用说明，也不要求它们全部存在。
+| 项目 | PayDance 参考方向 | shixin 方向 |
+| --- | --- | --- |
+| 核心功能 | 实时工资追踪 | 保持相近的核心功能 |
+| 视觉 | Windows 11 风格 | 科技风蓝色毛玻璃 |
+| 桌面入口 | Windows 托盘/迷你悬浮窗 | macOS 菜单栏金额入口 |
+| 移动入口 | 未作为核心表面 | 增加 iOS 状态栏、Widget/Live Activity 设计 |
+| 实现边界 | Windows 桌面能力 | 当前优先 macOS + iOS 设计 |
 
 ## 使用
 
-在 Codex 中显式调用：
-
 ```text
-使用 $shixin 把这个参考图做成一个可运行的 React/Vite 原型，并验证主要交互。
+使用 $shixin 构建一个类似 PayDance 的实时工资追踪器，支持月薪、工作日、午休和通勤计算，界面使用科技风蓝色毛玻璃，并加入 macOS 菜单栏金额入口和 iOS 状态栏设计。
 ```
 
-macOS 菜单栏场景：
+## 设计与实现原则
 
-```text
-使用 $shixin，把这个实时数据看板做成只支持 macOS 的菜单栏应用，菜单栏只显示数字，点击后打开完整设置界面。
-```
+- 金额、进度和剩余时间必须来自同一套薪资计算模型。
+- 先做固定数据的视觉保真，再接入实时计时、持久化和原生桥接。
+- iOS 设计要区分 App 内顶部栏、安全区、Widget 和 Live Activity；真正实现 Live Activity 时使用 ActivityKit 与 WidgetKit/SwiftUI。
+- 不复制 PayDance 源码、商标、文案或页面结构，只参考公开的产品功能。
 
 ## 目录
 
@@ -35,19 +43,12 @@ shixin/
 ├── SKILL.md
 ├── agents/openai.yaml
 ├── references/
-│   ├── product-flow.md
-│   ├── visual-implementation.md
-│   ├── macos-tauri.md
+│   ├── product-spec.md
+│   ├── visual-system.md
+│   ├── platform-surfaces.md
 │   └── qa-release.md
 └── README.md
 ```
-
-## 范围与限制
-
-- 默认优先本地、个人使用和最小可维护实现。
-- 不默认增加账号、云同步、遥测、通知、自动启动或跨平台支持。
-- 视觉截图和构建结果不能替代真实浏览器或 macOS 系统 UI 验收。
-- Skill 本身不携带任何项目源码、截图、录屏、凭据或登录态。
 
 ## 安装
 
@@ -57,4 +58,4 @@ shixin/
 <CODEX_HOME>/skills/shixin
 ```
 
-安装后可使用 `$shixin` 显式调用。具体目录以当前 Codex 环境的 Skills 配置为准。
+之后即可使用 `$shixin` 调用。
